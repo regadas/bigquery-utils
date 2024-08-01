@@ -11,3 +11,6 @@ jstat:
 bn.js:
   versions:
     - 5.2.1
+fast-xml-parser:
+  versions:
+    - 4.4.1

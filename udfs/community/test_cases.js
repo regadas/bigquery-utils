@@ -3502,3 +3502,12 @@ generate_udf_test("kll_sketch_quantile", [
     expected_output: `2.0`
   }
 ]);
+
+generate_udf_test("xml_to_json", [
+  {
+    inputs: [
+      `'<xml foo="FOO"><bar><baz>BAZ</baz></bar></xml>'`
+    ],
+    expected_output: `JSON '{"xml":{"bar":{"baz":"BAZ"},"@_foo":"FOO"}}'`
+  }
+]);
