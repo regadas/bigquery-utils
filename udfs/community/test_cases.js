@@ -3509,5 +3509,17 @@ generate_udf_test("xml_to_json", [
       `'<xml foo="FOO"><bar><baz>BAZ</baz></bar></xml>'`
     ],
     expected_output: `JSON '{"xml":{"bar":{"baz":"BAZ"},"@_foo":"FOO"}}'`
+  },
+  {
+    inputs: [
+      `CAST(NULL AS STRING)`
+    ],
+    expected_output: `NULL`
+  },
+  {
+    inputs: [
+      `''`
+    ],
+    expected_output: `JSON '{}'`
   }
 ]);

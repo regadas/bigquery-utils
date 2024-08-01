@@ -17,13 +17,37 @@ config { hasOutput: true }
 
 CREATE OR REPLACE FUNCTION ${self()}(xml STRING)
 RETURNS JSON
+DETERMINISTIC
 LANGUAGE js 
 OPTIONS(
 library="${JS_BUCKET}/fast-xml-parser-v4.4.1.min.js",
-description="""Source: https://github.com/NaturalIntelligence/fast-xml-parser
+description="""Converts XML to JSON using the open source
+fast-xml-parser JavaScript library. 
+NULL input is returned as NULL output.
+Empty string input is returned as empty JSON object.
+
+fast-xml-parser repo: https://github.com/NaturalIntelligence/fast-xml-parser
 See link below for a list of options you can pass to the XMLParser object: 
 https://github.com/NaturalIntelligence/fast-xml-parser/blob/master/docs/v4/2.XMLparseOptions.md
+
+/*
+ * Example Usage:
+ * Run the query below in BigQuery
+ */
+
+SELECT bqutil.fn.xml_to_json(
+  '<xml foo="FOO"><bar><baz>BAZ</baz></bar></xml>'
+)
+
+/*
+ * The query result will be the following:
+ * {"xml":{"@_foo":"FOO","bar":{"baz":"BAZ"}}}
+ */
+
 """) AS """
+if(xml===null) {
+  return null;
+}
 return JSON.parse(JSON.stringify(new fast_xml_parser.XMLParser({
   ignoreAttributes : false
 }).parse(xml)));
